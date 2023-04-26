@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.text.InputType
+import android.text.method.PasswordTransformationMethod
+import android.text.method.TransformationMethod
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -181,7 +183,8 @@ internal class NativeTextInput(context: Context, id: Int, creationParams: Map<St
             } else if (keyboardType == "KeyboardType.emailAddress") {
                 editText.inputType = editText.inputType or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             }
-        } else if (creationParams.get("textContentType") != null) {
+        }
+        if (creationParams.get("textContentType") != null) {
             val textContentType = creationParams.get("textContentType") as String
             if (textContentType == "TextContentType.username" ||
                     textContentType == "TextContentType.givenName" ||
@@ -217,7 +220,7 @@ internal class NativeTextInput(context: Context, id: Int, creationParams: Map<St
         }
 
         editText.setOnFocusChangeListener { v, hasFocus ->
-            Log.d(TAG, "hasFocus:" + hasFocus)
+            Log.d(TAG, "hasFocus: $hasFocus")
             if (hasFocus) {
                 channel.invokeMethod("inputStarted", null)
             } else {

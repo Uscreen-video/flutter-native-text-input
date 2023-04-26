@@ -279,6 +279,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   double _lineHeight = 22.0;
   double _contentHeight = 22.0;
+  String _currentText = "";
 
   @override
   void initState() {
@@ -307,6 +308,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   Future<void> _controllerListener() async {
+    if (_effectiveController.text == _currentText) return;
+    _currentText = _effectiveController.text;
+    
     final MethodChannel channel = await _channel.future;
     channel.invokeMethod(
       "setText",
@@ -592,6 +596,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   void _inputValueChanged(String? text, int? lineIndex) async {
     if (text != null) {
+      _currentText = text;
       _effectiveController.text = text;
       if (widget.onChanged != null) widget.onChanged!(text);
 

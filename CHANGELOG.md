@@ -1,3 +1,8 @@
+## 2.4.1
+
+* fix `textContentType` setting for Android
+* fix text input caret jumping
+
 ## 2.4.0
 
 * support custom font families on iOS
