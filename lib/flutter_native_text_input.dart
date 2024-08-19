@@ -269,12 +269,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
   final Completer<MethodChannel> _channel = Completer();
 
   TextEditingController? _controller;
+
   TextEditingController get _effectiveController =>
       widget.controller ?? (_controller ??= TextEditingController());
 
   FocusNode? _focusNode;
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   double _lineHeight = 22.0;
@@ -310,7 +311,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   Future<void> _controllerListener() async {
     if (_effectiveController.text == _currentText) return;
     _currentText = _effectiveController.text;
-    
+
     final MethodChannel channel = await _channel.future;
     channel.invokeMethod(
       "setText",
@@ -374,6 +375,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
           textCapitalization: widget.textCapitalization,
           onChanged: widget.onChanged,
           onSubmitted: widget.onSubmitted,
+          obscureText: widget.textContentType == TextContentType.password ||
+              widget.textContentType == TextContentType.newPassword,
         );
     }
   }
@@ -395,9 +398,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    MethodChannel channel =
-        MethodChannel("flutter_native_text_input$nativeViewId")
-          ..setMethodCallHandler(_onMethodCall);
+    MethodChannel channel = MethodChannel("flutter_native_text_input$nativeViewId")
+      ..setMethodCallHandler(_onMethodCall);
     channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
         setState(() {
@@ -476,8 +478,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         widget.iosOptions?.placeholderStyle?.fontWeight != null) {
       params = {
         ...params,
-        "placeholderFontWeight":
-            widget.iosOptions?.placeholderStyle?.fontWeight.toString(),
+        "placeholderFontWeight": widget.iosOptions?.placeholderStyle?.fontWeight.toString(),
       };
     }
 
@@ -485,8 +486,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         widget.iosOptions?.placeholderStyle?.fontFamily != null) {
       params = {
         ...params,
-        "placeholderFontFamily":
-        widget.iosOptions?.placeholderStyle?.fontFamily.toString(),
+        "placeholderFontFamily": widget.iosOptions?.placeholderStyle?.fontFamily.toString(),
       };
     }
 
@@ -552,12 +552,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
         _singleTapRecognized();
     }
 
-    throw MissingPluginException(
-        "NativeTextInput._onMethodCall: No handler for ${call.method}");
+    throw MissingPluginException("NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
-  double get _minHeight =>
-      (widget.minLines * _lineHeight) + widget.minHeightPadding;
+  double get _minHeight => (widget.minLines * _lineHeight) + widget.minHeightPadding;
 
   double get _maxHeight {
     if (!_isMultiline) return _minHeight;

@@ -1,3 +1,7 @@
+## 2.4.1+1
+
+* Password obfuscation added for non-iOS and non-Android platforms
+
 ## 2.4.1
 
 * fix `textContentType` setting for Android
