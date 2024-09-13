@@ -367,6 +367,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
           ),
           focusNode: widget.focusNode,
           keyboardAppearance: widget.iosOptions?.keyboardAppearance,
+          keyboardType: _mapKeyboardType(widget.keyboardType),
           maxLines: widget.maxLines,
           minLines: widget.minLines,
           placeholder: widget.placeholder,
@@ -619,5 +620,34 @@ class _NativeTextInputState extends State<NativeTextInput> {
             curve: _caretAnimationCurve,
           );
     });
+  }
+
+  /// Maps a [KeyboardType] to a [TextInputType].
+  TextInputType _mapKeyboardType(KeyboardType keyboardType) {
+    switch (keyboardType) {
+      case KeyboardType.defaultType:
+      case KeyboardType.asciiCapable:
+        return TextInputType.text;
+      case KeyboardType.numbersAndPunctuation:
+        return TextInputType.text; // Closest match
+      case KeyboardType.url:
+        return TextInputType.url;
+      case KeyboardType.numberPad:
+        return TextInputType.number;
+      case KeyboardType.phonePad:
+      case KeyboardType.namePhonePad:
+        return TextInputType.phone;
+      case KeyboardType.emailAddress:
+        return TextInputType.emailAddress;
+      case KeyboardType.decimalPad:
+        return const TextInputType.numberWithOptions(decimal: true);
+      case KeyboardType.twitter:
+      case KeyboardType.webSearch:
+        return TextInputType.text; // No direct equivalent
+      case KeyboardType.asciiCapableNumberPad:
+        return TextInputType.number;
+      default:
+        return TextInputType.text;
+    }
   }
 }
