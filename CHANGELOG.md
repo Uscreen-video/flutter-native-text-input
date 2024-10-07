@@ -1,7 +1,8 @@
-## 2.4.1+2
+## 2.4.1+1
 
 * Password obfuscation added for non-iOS and non-Android platforms
-* Keyboard type added for non-iOS and non-Android platforms
+* Keyboard type applied for non-iOS and non-Android platforms
+* Text style applied for non-iOS and non-Android platforms
 
 ## 2.4.1
 

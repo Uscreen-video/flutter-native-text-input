@@ -362,6 +362,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         return CupertinoTextField(
           controller: widget.controller,
           cursorColor: widget.iosOptions?.cursorColor,
+          style: widget.style,
           decoration: BoxDecoration(
             border: Border.all(width: 0, color: Colors.transparent),
           ),
